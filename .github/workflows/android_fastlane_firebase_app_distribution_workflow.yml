@@ -24,6 +24,18 @@ jobs:
       with:
         channel: stable
 
+    - name: Install Android SDK components
+      run: |
+        sudo apt-get update
+        yes | sdkmanager --licenses
+        sdkmanager "platform-tools" \
+                   "build-tools;34.0.0" \
+                   "platforms;android-34" \
+                   "cmdline-tools;latest"
+
+    - name: Flutter Pub Get
+      run: flutter pub get
+
     - name: Install Ruby & Bundler
       uses: ruby/setup-ruby@v1
       with:
