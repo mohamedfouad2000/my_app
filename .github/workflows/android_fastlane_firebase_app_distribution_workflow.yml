@@ -18,21 +18,29 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        
 
     - name: Install Flutter
       uses: subosito/flutter-action@v2
       with:
         channel: stable
 
+    # ===== تثبيت Android SDK commandline tools =====
+    - name: Install Android Commandline Tools
+      run: |
+        mkdir -p $ANDROID_HOME/cmdline-tools
+        cd $ANDROID_HOME/cmdline-tools
+        curl -Lo commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+        unzip commandlinetools.zip
+        rm commandlinetools.zip
+        mv cmdline-tools latest
+
     - name: Install Android SDK components
       run: |
-        sudo apt-get update
-        yes | sdkmanager --licenses
-        sdkmanager "platform-tools" \
-                   "build-tools;34.0.0" \
-                   "platforms;android-34" \
-                   "cmdline-tools;latest"
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+          "platform-tools" \
+          "build-tools;34.0.0" \
+          "platforms;android-34"
 
     - name: Flutter Pub Get
       run: flutter pub get
@@ -43,7 +51,12 @@ jobs:
         ruby-version: "3.2.3"
         bundler-cache: true
         working-directory: android
-        
+
+    - name: Fix Bundler Platform Issue
+      run: |
+        bundle lock --add-platform x86_64-linux
+      working-directory: android
+
     - name: Build & Distribute to Firebase
       env:
         FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
