@@ -1,0 +1,12 @@
+version: 1
+app_name: "my_app"
+platforms:
+  - "mobile"
+state_management: "bloc"
+ci_provider: "none"
+features:
+  api: true
+  env: true
+  localization: true
+  tests: true
+  theme: true

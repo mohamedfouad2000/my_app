@@ -1,0 +1,60 @@
+name: my_app
+description: "A Flutter app scaffolded by flutter_blueprint with BLoC."
+publish_to: "none"
+
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.24.0"
+
+dependencies:
+  base_url_switcher: ^2.1.2
+  bloc: ^8.1.4
+  cloud_firestore: ^6.1.0
+  connectivity_plus: ^6.0.5
+  dartz: ^0.10.1
+  dio: ^5.5.0
+  equatable: ^2.0.5
+  firebase_auth: ^6.1.2
+  firebase_core: ^4.2.1
+  firebase_messaging: ^16.0.4
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.5
+  flutter_dotenv: ^5.1.0
+  flutter_getit: ^3.0.1
+  flutter_localizations:
+    sdk: flutter
+  flutter_paypal_payment: ^1.0.8
+  flutter_screenutil: ^5.9.3
+  flutter_secure_storage: ^9.2.2
+  geolocator: ^14.0.2
+  google_maps_flutter: ^2.14.0
+  internet_connection_checker_plus: ^2.7.2
+  intl: ^0.20.2
+  pretty_dio_logger: ^1.4.0
+  shared_preferences: ^2.2.3
+  velocity_x: ^4.3.1
+
+dev_dependencies:
+  bloc_test: ^9.1.7
+  flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/map_style.json
+    - assets/l10n/
+    - .env
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/1024.png"
