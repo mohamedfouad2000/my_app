@@ -51,7 +51,7 @@ flutter:
     - assets/images/
     - assets/map_style.json
     - assets/l10n/
-    - .env
+    # - .env
 
 flutter_launcher_icons:
   android: true
