@@ -21,7 +21,6 @@ platform :android do
       firebase_app_distribution(
         app: "1:24349726431:android:c3db9d3f3528134e14fb6a",
         testers: "mohamedabdelmonemfouad@gmail.com",
-        groups: "qa-team, trusted-testers",
         firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
         android_artifact_type: "APK",
         apk_path: apk_path,
