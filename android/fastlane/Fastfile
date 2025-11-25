@@ -1,19 +1,32 @@
-
 default_platform(:android)
 
 platform :android do
-  desc "For Android Firebase distribution"
+  desc "Distribute all APKs to Firebase App Distribution"
   lane :Firebase_distribution do
+    # نظافة المشروع
     sh "flutter clean"
-    sh "flutter build apk --target lib/main_development.dart --split-per-abi"
-    firebase_app_distribution(
-      app: "1:24349726431:android:c3db9d3f3528134e14fb6a",
-      groups: "qa-team, trusted-testers",
-      firebase_cli_token: ENV["FIREBASE_TOKEN"],
-      android_artifact_type: "APK",
-      apk_path: "../build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk",
-      testers: "mohamedabdelmonemfouad@gmail.com",
-      release_notes: "New build is available for testing."
-   )  
+    
+    # بناء كل الـ APKs لكل ABI
+    sh "flutter build apk --target lib/main_development.dart --split-per-abi --release"
+
+    # المسارات لكل ABI
+    apk_paths = [
+      "../build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk",
+      "../build/app/outputs/flutter-apk/app-arm64-v8a-release.apk",
+      "../build/app/outputs/flutter-apk/app-x86_64-release.apk"
+    ]
+
+    # توزيع كل APK على Firebase
+    apk_paths.each do |apk_path|
+      firebase_app_distribution(
+        app: "1:24349726431:android:c3db9d3f3528134e14fb6a",
+        testers: "mohamedabdelmonemfouad@gmail.com",
+        groups: "qa-team, trusted-testers",
+        firebase_cli_token: ENV["FIREBASE_TOKEN"],
+        android_artifact_type: "APK",
+        apk_path: apk_path,
+        release_notes: "New build is available for testing."
+      )
+    end
   end
 end
