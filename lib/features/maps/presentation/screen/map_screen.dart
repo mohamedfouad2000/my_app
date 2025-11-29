@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location_platform_interface/location_platform_interface.dart';
 import 'package:my_app/core/utils/location_service.dart';
 
 class UberStyleMapScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class UberStyleMapScreen extends StatefulWidget {
 class _UberStyleMapScreenState extends State<UberStyleMapScreen> {
   GoogleMapController? _mapController;
   bool _mapReady = false;
+  bool _firstCall = true;
 
   LatLng? _currentPosition;
 
@@ -27,29 +29,49 @@ class _UberStyleMapScreenState extends State<UberStyleMapScreen> {
   }
 
   void updateMyLocation() async {
-    await locationService.checkAndRequestLocationService();
-    var hasPermission =
-        await locationService.checkAndRequestLocationPermission();
-    if (hasPermission) {
+    try {
       locationService.getRealTimeLocationData((locationData) {
-        locationService.location.changeSettings(
-          distanceFilter: 5,
-        );
-        _mapController?.animateCamera(
-          CameraUpdate.newLatLng(
-            LatLng(locationData.latitude!, locationData.longitude!),
-          ),
-        );
-        _markers.add(
-          Marker(
-            markerId: const MarkerId('current_location'),
-            position: LatLng(locationData.latitude!, locationData.longitude!),
-            infoWindow: const InfoWindow(title: 'You are here'),
-          ),
-        );
-        setState(() {});
+        setState(() {
+          _currentPosition =
+              LatLng(locationData.latitude!, locationData.longitude!);
+
+          updateCameraPosition(locationData);
+          _markers.add(
+            Marker(
+              markerId: const MarkerId('current_location'),
+              position: _currentPosition!,
+              infoWindow: const InfoWindow(title: 'موقعي الحالي'),
+            ),
+          );
+        });
       });
-    } else {}
+    } on LocationServiceException catch (e) {
+      print('خدمة الموقع معطلة. يرجى تمكينها.');
+    } on LocationPermissionException catch (e) {
+      print('إذن الموقع مرفوض. يرجى منح الإذن.');
+    } catch (e) {
+      print('خطأ غير متوقع: $e');
+    }
+  }
+
+  void updateCameraPosition(LocationData locationData) {
+    if (_firstCall) {
+      _firstCall = false;
+      _mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(locationData.latitude!, locationData.longitude!),
+            zoom: 14,
+          ),
+        ),
+      );
+    } else {
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(locationData.latitude!, locationData.longitude!),
+        ),
+      );
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) async {
@@ -77,8 +99,7 @@ class _UberStyleMapScreenState extends State<UberStyleMapScreen> {
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: const CameraPosition(
-          target: LatLng(30.0444, 31.2357),
-          zoom: 14,
+          target: LatLng(0, 0),
         ),
         markers: _markers,
         myLocationEnabled: false,
