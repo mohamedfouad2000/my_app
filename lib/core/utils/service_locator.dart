@@ -13,7 +13,7 @@ final sl = GetIt.instance;
 
 class ServiceLocator {
   Future<void> init() async {
-    sl.registerLazySingleton<AppConfig>(() => AppConfig.load());
+    // sl.registerLazySingleton<AppConfig>(() => AppConfig.load());
 
     // 2️⃣ Connectivity
     sl.registerLazySingleton<Connectivity>(() => Connectivity());
@@ -23,7 +23,7 @@ class ServiceLocator {
     sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
     // 4️⃣ Api Client
-    sl.registerLazySingleton<ApiClient>(() => ApiClient(sl()));
+    sl.registerLazySingleton<ApiClient>(() => ApiClient());
 
     //data sources
     sl.registerLazySingleton<BftxNexRemoteDataSource>(

@@ -9,17 +9,17 @@ import 'interceptors/logger_interceptor.dart';
 import 'interceptors/retry_interceptor.dart';
 
 class ApiClient {
-  ApiClient(this.config) {
+  ApiClient() {
     _initializeDio();
   }
 
-  final AppConfig config;
+  // final AppConfig config;
   late final Dio dio;
 
   void _initializeDio() {
     dio = Dio(
       BaseOptions(
-        baseUrl: config.apiBaseUrl,
+        baseUrl: 'https://jsonplaceholder.typicode.com',
         connectTimeout: Duration(milliseconds: AppConstants.connectTimeout),
         receiveTimeout: Duration(milliseconds: AppConstants.receiveTimeout),
         sendTimeout: Duration(milliseconds: AppConstants.sendTimeout),
