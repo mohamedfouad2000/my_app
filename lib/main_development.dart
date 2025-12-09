@@ -20,11 +20,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await EnvLoader.load();
+  // await EnvLoader.load();
 
   // تحميل AppConfig
-  final appConfig = AppConfig.load();
-  await EnvLoader.load();
+  // final appConfig = AppConfig.load();
+  // await EnvLoader.load();
   // await ServiceLocator().init();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
