@@ -13,7 +13,7 @@ class BftxNexRemoteDataSourceImpl implements BftxNexRemoteDataSource {
   @override
   Future<List<NexMediaModel>> getAllNex() async {
     final response = await networkManager.get(
-      ApiEndpoints.nexAllEndPoint,
+      'https://bftx.dev/api${ApiEndpoints.nexAllEndPoint}',
     );
     final data = await RemoteDataSourceCallHandler()(response);
     if (data.data == []) {

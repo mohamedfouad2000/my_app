@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
     if (!(await doc.get()).exists) {
       await doc.set({
         'uid': user.uid,
-        'displayName': user.displayName ?? user.email,
+        'fullName': user.displayName ?? user.email,
         'email': user.email,
         'createdAt': FieldValue.serverTimestamp(),
       });
@@ -224,7 +224,7 @@ class _UsersListPageState extends State<UsersListPage> {
                     final u = users[i].data();
                     final chatId = _chatIdFor(me.uid, u['uid']);
                     return ListTile(
-                      title: Text(u['displayName'] ?? 'Unknown'),
+                      title: Text(u['fullName'] ?? 'Unknown'),
                       subtitle: Text(u['email'] ?? ''),
                       onTap: () => Navigator.push(
                         context,
@@ -232,7 +232,7 @@ class _UsersListPageState extends State<UsersListPage> {
                           builder: (_) => ChatPage(
                             chatId: chatId,
                             otherUid: u['uid'],
-                            otherName: u['displayName'] ?? '',
+                            otherName: u['fullName'] ?? '',
                           ),
                         ),
                       ),
@@ -356,8 +356,9 @@ class _ChatPageState extends State<ChatPage> {
                   .orderBy('createdAt')
                   .snapshots(),
               builder: (context, snap) {
-                if (!snap.hasData)
+                if (!snap.hasData) {
                   return const Center(child: CircularProgressIndicator());
+                }
                 final msgs = snap.data!.docs;
                 return ListView.builder(
                   controller: _scroll,

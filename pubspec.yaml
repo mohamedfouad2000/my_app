@@ -37,6 +37,8 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   shared_preferences: ^2.2.3
   velocity_x: ^4.3.1
+  web_socket_channel: ^3.0.3
+  audioplayers: ^6.5.1
 
 dev_dependencies:
   bloc_test: ^9.1.7
@@ -52,6 +54,8 @@ flutter:
     - assets/images/
     - assets/map_style.json
     - assets/l10n/
+    - assets/sounds/
+
     # - .env
 
 flutter_launcher_icons:

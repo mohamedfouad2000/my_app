@@ -1,6 +1,7 @@
 /// API endpoint constants
 class ApiEndpoints {
   ApiEndpoints._();
+  static const String baseUrl = 'https://jsonplaceholder.typicode.com';
 
   // Auth
   static const String login = '/auth/login';

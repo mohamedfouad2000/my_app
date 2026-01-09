@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_app/core/utils/service_locator.dart';
+import 'package:my_app/features/auth/presenation/cubit/auth_cubit.dart';
 import 'package:my_app/features/listing/presentation/cubit/listing_cubit.dart';
-import 'package:my_app/features/listing/presentation/screens/listing_screen.dart';
+import 'package:my_app/features/splach/presentation/splach_screen.dart';
 
 import '../core/theme/app_theme.dart';
 
@@ -69,14 +71,19 @@ class _AppState extends State<App> {
               BlocProvider(
                 create: (context) => ListingCubit()..getAllNex(),
               ),
-              // Add more BLoCs here
+              BlocProvider(
+                lazy: false,
+                create: (context) => AuthCubit(sl()),
+              ),
             ],
             child: MaterialApp(
               title: 'My App',
+              debugShowCheckedModeBanner: false,
               theme: AppTheme.light(),
               darkTheme: AppTheme.dark(),
               themeMode: ThemeMode.system,
-              home: ListingScreen(),
+              home: SplachScreen(),
+              // ListingScreen(),
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
